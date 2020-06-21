@@ -2,7 +2,7 @@
   "name": "papa",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron.js",
+  "main": "public/main.js",
   "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
