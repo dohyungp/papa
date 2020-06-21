@@ -1,8 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import logo from "./logo.svg";
+import { getBidList } from "./lib/ebidFetcher";
+import "./App.css";
 
 function App() {
+  useEffect(() => {
+    getBidList({ searchTerm: "수원고등" });
+  });
   return (
     <div className="App">
       <header className="App-header">

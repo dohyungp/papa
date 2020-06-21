@@ -2,13 +2,16 @@
   "name": "papa",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron.js",
+  "main": "public/main.js",
   "homepage": "./",
+  "proxy": "http://m.ebid.lh.or.kr",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "electron-is-dev": "^1.2.0",
+    "moment": "^2.27.0",
+    "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
