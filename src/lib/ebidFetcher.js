@@ -21,7 +21,7 @@ function getBidDetailInfo(bidList) {
 function getPageList(pageAnchors) {
   const pageList = pageAnchors.map((v) => {
     const [, page] = PAGE_REGEX.exec(v.getAttribute("onclick"));
-    return page;
+    return { code: page, text: v.text };
   });
   return {
     hasMore: pageAnchors.length !== 0,
