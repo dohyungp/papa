@@ -5,6 +5,7 @@ import { getBidList } from "./lib/ebidFetcher";
 import "./App.css";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [bidName, setBidName] = useState("");
   const [bidNum, setBidNum] = useState("");
   const [fromDate, setFromDate] = useState(defaultFromDate);
@@ -13,12 +14,14 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const data = await getBidList({
       searchTerm: bidName,
       bidNum,
       fromDate,
       toDate,
     });
+    setIsLoading(false);
     setResult(data);
   };
   return (
@@ -76,7 +79,7 @@ function App() {
           <button>검색</button>
         </form>
       </div>
-
+      {isLoading ? "로딩 중" : ""}
       {result?.bidDetailInfo?.map((elem) => {
         return (
           <div className="item-list" key={elem.bidNum}>
