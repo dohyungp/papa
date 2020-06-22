@@ -1,15 +1,18 @@
 import { postForm } from "./fetch";
-import moment from "moment";
+import { defaultFromDate, defaultToDate } from "./constants";
 
 const DDS_REGEX = /fn_dds_open\('(\d+)', '(\d+)'/;
 const PAGE_REGEX = /goPage\('(\d+)'\)/;
-const defaultFromDate = moment().subtract(1, "years").format("YYYY/MM/DD");
-const defaultToDate = moment().format("YYYY/MM/DD");
 
 function getBidDetailInfo(bidList) {
   const detailInfo = bidList.map((v) => {
+    let title = null;
     const [, bidNum, bidDegree] = DDS_REGEX.exec(v.getAttribute("onclick"));
+    const titleElem = v.getElementsByTagName("strong");
+    if (titleElem.length > 0)
+      title = titleElem[0].innerText.trim().replace("입찰건명: ", "");
     return {
+      title,
       bidNum,
       bidDegree,
     };
@@ -54,8 +57,8 @@ export async function getBidList({
   pageAnchors = Array.from(pageAnchors);
   const bidDetailInfo = getBidDetailInfo(bidList);
   const pageInfo = getPageList(pageAnchors);
-  console.log({
+  return {
     pageInfo,
     bidDetailInfo,
-  });
+  };
 }
