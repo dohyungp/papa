@@ -21,14 +21,12 @@ function getBidDetailInfo(bidList) {
   return detailInfo;
 }
 
-function getPageList(pageAnchors) {
-  const pageList = pageAnchors.map((v) => {
-    const [, page] = PAGE_REGEX.exec(v.getAttribute("onclick"));
-    return { code: page, text: v.text };
-  });
+function getPage(pageAnchor) {
+  if (!pageAnchor) return { hasMore: false };
+  const [, page] = PAGE_REGEX.exec(pageAnchor.getAttribute("onclick"));
   return {
-    hasMore: pageAnchors.length !== 0,
-    next: pageList[0]?.code,
+    hasMore: true,
+    next: page,
   };
 }
 
@@ -52,11 +50,11 @@ export async function getBidList({
 
   let dom = new DOMParser().parseFromString(data, "text/html");
   let bidList = dom.querySelectorAll(".list li[onclick]");
-  let pageAnchors = dom.querySelectorAll(".paging a");
+  const pageAnchor = dom.querySelector(".paging span").nextElementSibling;
   bidList = Array.from(bidList); // Cast from NodeList to Array
-  pageAnchors = Array.from(pageAnchors);
+  // pageAnchors = Array.from(pageAnchors);
   const bidItems = getBidDetailInfo(bidList);
-  const pageInfo = getPageList(pageAnchors);
+  const pageInfo = getPage(pageAnchor);
   return {
     pageInfo,
     bidItems,

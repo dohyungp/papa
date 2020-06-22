@@ -4,13 +4,18 @@ import SearchForm from "./components/SearchForm";
 import { useRecoilValueLoadable } from "recoil";
 import { bidListQuery } from "./lib/selectors";
 import "./App.css";
+import { SearchResultList } from "./components/SearchResultList";
 
 function App() {
-  const searchResult = useRecoilValueLoadable(bidListQuery);
+  const { state, contents } = useRecoilValueLoadable(bidListQuery);
   return (
     <div className="App">
-      <SearchForm loading={searchResult.state === "loading"} />
-      {JSON.stringify(searchResult)}
+      <SearchForm loading={state === "loading"} />
+      <SearchResultList
+        loading={state === "loading"}
+        pageInfo={contents?.pageInfo}
+        itemList={contents?.bidItems}
+      />
     </div>
   );
 }
