@@ -28,7 +28,7 @@ function getPageList(pageAnchors) {
   });
   return {
     hasMore: pageAnchors.length !== 0,
-    pageList,
+    next: pageList[0]?.code,
   };
 }
 
@@ -55,10 +55,10 @@ export async function getBidList({
   let pageAnchors = dom.querySelectorAll(".paging a");
   bidList = Array.from(bidList); // Cast from NodeList to Array
   pageAnchors = Array.from(pageAnchors);
-  const bidDetailInfo = getBidDetailInfo(bidList);
+  const bidItems = getBidDetailInfo(bidList);
   const pageInfo = getPageList(pageAnchors);
   return {
     pageInfo,
-    bidDetailInfo,
+    bidItems,
   };
 }
