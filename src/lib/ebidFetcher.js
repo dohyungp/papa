@@ -1,5 +1,10 @@
 import { postForm } from "./fetch";
-import { defaultFromDate, defaultToDate, companyItemKey } from "./constants";
+import {
+  defaultFromDate,
+  defaultToDate,
+  companyItemKey,
+  getTendorDiffRatio,
+} from "./constants";
 
 const DDS_REGEX = /fn_dds_open\('(\d+)', '(\d+)', '(\w*)', '(\d+)', '(\d+)', '(\d+)'\)/;
 const PAGE_REGEX = /goPage\('(\d+)'\)/;
@@ -111,6 +116,29 @@ function getBaseCompanyDetails(companyDetailElems) {
   return companyDetails;
 }
 
+function calcTendorRatio(bidInfo, companyBiddingList) {
+  let basePrice = null;
+  let aPrice = null;
+  for (let i = 0; i < bidInfo.length; i++)
+    if (bidInfo[i].type === "기초금액") {
+      [basePrice] = bidInfo[i].value?.split("원");
+      basePrice = basePrice?.trim();
+      basePrice = parseInt(basePrice?.split(",")?.join(""));
+    } else if (bidInfo[i].type === "가격점수제외금액(A)") {
+      [aPrice] = bidInfo[i].value?.split("원");
+      aPrice = aPrice?.trim();
+      aPrice = parseInt(aPrice?.split(",")?.join(""));
+    }
+  return companyBiddingList.map((company) => {
+    const bidPrice = parseInt(company?.bidPrice?.split(",")?.join(""));
+    const tendorRatio = getTendorDiffRatio(basePrice, bidPrice, aPrice);
+    return {
+      ...company,
+      tendorRatio,
+    };
+  });
+}
+
 export async function getBidDetail({ bidNum, bidDegree } = {}) {
   const data = await postForm(`/ebid.mo.ts.cmd.MobileTenderOpenDetailCmd.dev`, {
     bidNum,
@@ -123,9 +151,10 @@ export async function getBidDetail({ bidNum, bidDegree } = {}) {
   infoElems = Array.from(infoElems);
   predPriceElems = Array.from(predPriceElems);
   companyDetailElems = Array.from(companyDetailElems);
-  const companyBiddingList = getBaseCompanyDetails(companyDetailElems);
+  let companyBiddingList = getBaseCompanyDetails(companyDetailElems);
   const bidInfo = getBidInfo(infoElems);
   const predPriceResults = getPredPriceSelectionResults(predPriceElems);
+  companyBiddingList = calcTendorRatio(bidInfo, companyBiddingList);
   return {
     predPriceResults,
     bidInfo,

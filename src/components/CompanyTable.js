@@ -24,6 +24,12 @@ const columns = [
     key: "tendorRatioWithoutA",
   },
   {
+    title: "기초대비사정률(%)",
+    dataIndex: "tendorRatio",
+    key: "tendorRatio",
+    render: (v) => parseFloat(v).toFixed(3),
+  },
+  {
     title: "선택번호",
     dataIndex: "selectedNumbers",
     key: "selectedNumbers",
