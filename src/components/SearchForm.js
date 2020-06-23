@@ -59,7 +59,7 @@ const SearchForm = ({ loading = false }) => {
         <Form.Item name="searchTerm" label="입찰건명">
           <Input placeholder={"입찰건명을 입력하세요"} />
         </Form.Item>
-        <Form.Item name="jobCd" label="업무 구분">
+        <Form.Item name="jobCd" label="업무구분">
           <Select placeholder="업무구분을 선택하세요" allowClear>
             <Select.Option value="10">시설공사</Select.Option>
             <Select.Option value="20">용역</Select.Option>
