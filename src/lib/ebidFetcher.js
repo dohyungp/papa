@@ -1,20 +1,31 @@
 import { postForm } from "./fetch";
 import { defaultFromDate, defaultToDate } from "./constants";
 
-const DDS_REGEX = /fn_dds_open\('(\d+)', '(\d+)'/;
+const DDS_REGEX = /fn_dds_open\('(\d+)', '(\d+)', '(\w*)', '(\d+)', '(\d+)', '(\d+)'\)/;
 const PAGE_REGEX = /goPage\('(\d+)'\)/;
 
 function getBidDetailInfo(bidList) {
   const detailInfo = bidList.map((v) => {
     let title = null;
-    const [, bidNum, bidDegree] = DDS_REGEX.exec(v.getAttribute("onclick"));
+    let openBidEndDate = null;
+    const [, bidNum, bidDegree, isOpen, status, ,] = DDS_REGEX.exec(
+      v.getAttribute("onclick")
+    );
     const titleElem = v.getElementsByTagName("strong");
+    const rawBidDate = v.querySelector(".clear");
+    if (rawBidDate)
+      openBidEndDate = rawBidDate.textContent
+        .trim()
+        .replace("개찰마감일시: ", "");
     if (titleElem.length > 0)
       title = titleElem[0].innerText.trim().replace("입찰건명: ", "");
     return {
       title,
       bidNum,
       bidDegree,
+      isPrivate: isOpen !== "Y",
+      status: status === "07" ? "유찰" : "개찰",
+      openBidEndDate,
     };
   });
 
