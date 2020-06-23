@@ -3,10 +3,6 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import SearchListPage from "./pages/SearchListPage";
 import BidDetailPage from "./pages/BidDetailPage";
 import "./App.css";
-// import { WaitingPage } from "./pages/WaitingPage";
-
-// const SearchListPage = lazy(() => import("./pages/SearchListPage"));
-// const BidDetailPage = lazy(() => import("./pages/BidDetailPage"));
 
 function App() {
   return (
