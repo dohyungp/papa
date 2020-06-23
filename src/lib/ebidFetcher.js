@@ -71,3 +71,41 @@ export async function getBidList({
     bidItems,
   };
 }
+
+function getBidInfo(infoElems) {
+  const bidInfo = infoElems.map((v) => {
+    return {
+      type: v.querySelector("th")?.innerText?.trim(),
+      value: v.querySelector("td")?.innerText?.trim(),
+    };
+  });
+  return bidInfo;
+}
+
+function getBasePriceSelectionResults(basePriceElems) {
+  const basePriceResults = basePriceElems.map((v) => {
+    return {
+      basePrices: v.innerText?.trim(),
+      selectionCnt: parseInt(v.nextElementSibling?.innerText),
+    };
+  });
+  return basePriceResults;
+}
+
+export async function getBidDetail(bidNum, bidDegree) {
+  const data = await postForm(`/ebid.mo.ts.cmd.MobileTenderOpenDetailCmd.dev`, {
+    bidNum,
+    bidDegree,
+  });
+  const dom = new DOMParser().parseFromString(data, "text/html");
+  let infoElems = dom.querySelectorAll("[class=table-default] tr");
+  let basePriceElems = dom.querySelectorAll("td.txt-right");
+  infoElems = Array.from(infoElems);
+  basePriceElems = Array.from(basePriceElems);
+  const basePriceResults = getBasePriceSelectionResults(basePriceElems);
+  const bidInfo = getBidInfo(infoElems);
+  return {
+    basePriceResults,
+    bidInfo,
+  };
+}
