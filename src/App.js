@@ -1,16 +1,18 @@
 import React from "react";
-import "./App.css";
-import SearchForm from "./components/SearchForm";
-import { useRecoilValueLoadable } from "recoil";
-import { bidListQuery } from "./lib/selectors";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import SearchListPage from "./pages/SearchListPage";
+import BidDetailPage from "./pages/BidDetailPage";
 import "./App.css";
 
 function App() {
-  const searchResult = useRecoilValueLoadable(bidListQuery);
   return (
     <div className="App">
-      <SearchForm loading={searchResult.state === "loading"} />
-      {JSON.stringify(searchResult)}
+      <Router>
+        <Switch>
+          <Route exact path="/" component={SearchListPage} />
+          <Route path="/detail" component={BidDetailPage} />
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -11,6 +11,6 @@ export const bidListQuery = selector({
   get: async ({ get }) => {
     const queryState = get(QueryState);
     if (isEmpty(queryState)) return {};
-    else return await getBidList(get(QueryState));
+    else return await getBidList(queryState);
   },
 });
