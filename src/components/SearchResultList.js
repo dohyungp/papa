@@ -1,20 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Divider, List, Button, Descriptions } from "antd";
 import { QueryState } from "../lib/atoms";
 import { useRecoilState } from "recoil";
-import { Divider, List, Button, Descriptions } from "antd";
 
 export const SearchResultList = ({
   itemList = [],
   loading = false,
   pageInfo = {},
 }) => {
+  const [query, setQuery] = useRecoilState(QueryState);
+
   const getStatus = (row) => {
     if (row.isPrivate && row.status !== "유찰") return "비공개";
     else if (row.status === "유찰") return "유찰";
     else return "공개";
   };
 
-  const [query, setQuery] = useRecoilState(QueryState);
   const onLoadMore = () => {
     setQuery({ ...query, targetRow: pageInfo?.next });
   };
@@ -37,7 +39,15 @@ export const SearchResultList = ({
         dataSource={itemList}
         renderItem={(item) => (
           <List.Item>
-            <List.Item.Meta title={item.title} />
+            <List.Item.Meta
+              title={
+                <Link
+                  to={`/detail?bidNum=${item.bidNum}&bidDegree=${item.bidDegree}`}
+                >
+                  {item.title}
+                </Link>
+              }
+            />
             <Descriptions size="middle" column={4}>
               <Descriptions.Item label="공고번호">
                 {item.bidNum}

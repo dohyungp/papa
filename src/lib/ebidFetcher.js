@@ -92,7 +92,7 @@ function getBasePriceSelectionResults(basePriceElems) {
   return basePriceResults;
 }
 
-export async function getBidDetail(bidNum, bidDegree) {
+export async function getBidDetail({ bidNum, bidDegree } = {}) {
   const data = await postForm(`/ebid.mo.ts.cmd.MobileTenderOpenDetailCmd.dev`, {
     bidNum,
     bidDegree,
@@ -102,8 +102,8 @@ export async function getBidDetail(bidNum, bidDegree) {
   let basePriceElems = dom.querySelectorAll("td.txt-right");
   infoElems = Array.from(infoElems);
   basePriceElems = Array.from(basePriceElems);
-  const basePriceResults = getBasePriceSelectionResults(basePriceElems);
   const bidInfo = getBidInfo(infoElems);
+  const basePriceResults = getBasePriceSelectionResults(basePriceElems);
   return {
     basePriceResults,
     bidInfo,
