@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { Form, Input, DatePicker, Button } from "antd";
+import { Form, Input, DatePicker, Select, Button } from "antd";
 import { QueryState } from "../lib/atoms";
 import { useRecoilState } from "recoil";
 import { defaultFromDate, defaultToDate } from "../lib/constants";
@@ -23,7 +23,7 @@ const SearchForm = ({ loading = false }) => {
     setQuery({});
   };
   const onFinish = (values) => {
-    const { searchTerm, bidNum, bidDateRange } = values;
+    const { searchTerm, bidNum, bidDateRange, jobCd } = values;
     let [fromDate, toDate] = bidDateRange;
     fromDate = fromDate.format("YYYY/MM/DD");
     toDate = toDate.format("YYYY/MM/DD");
@@ -32,6 +32,7 @@ const SearchForm = ({ loading = false }) => {
       toDate,
       searchTerm,
       bidNum,
+      jobCd,
     });
   };
 
@@ -57,6 +58,14 @@ const SearchForm = ({ loading = false }) => {
         </Form.Item>
         <Form.Item name="searchTerm" label="입찰건명">
           <Input placeholder={"입찰건명을 입력하세요"} />
+        </Form.Item>
+        <Form.Item name="jobCd" label="업무 구분">
+          <Select placeholder="업무구분을 선택하세요" allowClear>
+            <Select.Option value="10">시설공사</Select.Option>
+            <Select.Option value="20">용역</Select.Option>
+            <Select.Option value="30">물품</Select.Option>
+            <Select.Option value="40">지급자재</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item label="개찰마감일자 범위" name="bidDateRange">
           <RangePicker style={{ width: "100%" }} format="YYYY/MM/DD" />
