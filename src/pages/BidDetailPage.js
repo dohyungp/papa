@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { DetailHeader } from "../components/DetailHeader";
+import { CompanyTable } from "../components/CompanyTable";
 import { getBidDetail } from "../lib/ebidFetcher";
 
 function useQuery() {
@@ -25,6 +26,7 @@ function BidDetailPage() {
   return (
     <div>
       <DetailHeader bidInfo={data?.bidInfo || []} loading={loading} />
+      <CompanyTable source={data?.companyBiddingList || []} loading={loading} />
     </div>
   );
 }

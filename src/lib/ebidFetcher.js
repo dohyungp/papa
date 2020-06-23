@@ -1,5 +1,5 @@
 import { postForm } from "./fetch";
-import { defaultFromDate, defaultToDate } from "./constants";
+import { defaultFromDate, defaultToDate, companyItemKey } from "./constants";
 
 const DDS_REGEX = /fn_dds_open\('(\d+)', '(\d+)', '(\w*)', '(\d+)', '(\d+)', '(\d+)'\)/;
 const PAGE_REGEX = /goPage\('(\d+)'\)/;
@@ -82,7 +82,7 @@ function getBidInfo(infoElems) {
   return bidInfo;
 }
 
-function getBasePriceSelectionResults(basePriceElems) {
+function getPredPriceSelectionResults(basePriceElems) {
   const basePriceResults = basePriceElems.map((v) => {
     return {
       basePrices: v.innerText?.trim(),
@@ -92,6 +92,25 @@ function getBasePriceSelectionResults(basePriceElems) {
   return basePriceResults;
 }
 
+function getBaseCompanyDetails(companyDetailElems) {
+  const companyDetails = companyDetailElems.map((v) => {
+    let companyInfo = v.querySelectorAll("li");
+    companyInfo = Array.from(companyInfo);
+    let company = {};
+    companyInfo.map((c) => {
+      let rawText = c?.innerText;
+      if (!rawText) return null;
+      let [k, ...v] = rawText.split(":");
+      k = k.trim();
+      v = v.join(":").trim();
+      company[companyItemKey(k)] = v;
+      return null;
+    });
+    return company;
+  });
+  return companyDetails;
+}
+
 export async function getBidDetail({ bidNum, bidDegree } = {}) {
   const data = await postForm(`/ebid.mo.ts.cmd.MobileTenderOpenDetailCmd.dev`, {
     bidNum,
@@ -99,13 +118,17 @@ export async function getBidDetail({ bidNum, bidDegree } = {}) {
   });
   const dom = new DOMParser().parseFromString(data, "text/html");
   let infoElems = dom.querySelectorAll("[class=table-default] tr");
-  let basePriceElems = dom.querySelectorAll("td.txt-right");
+  let predPriceElems = dom.querySelectorAll("td.txt-right");
+  let companyDetailElems = dom.querySelectorAll(".detail-list");
   infoElems = Array.from(infoElems);
-  basePriceElems = Array.from(basePriceElems);
+  predPriceElems = Array.from(predPriceElems);
+  companyDetailElems = Array.from(companyDetailElems);
+  const companyBiddingList = getBaseCompanyDetails(companyDetailElems);
   const bidInfo = getBidInfo(infoElems);
-  const basePriceResults = getBasePriceSelectionResults(basePriceElems);
+  const predPriceResults = getPredPriceSelectionResults(predPriceElems);
   return {
-    basePriceResults,
+    predPriceResults,
     bidInfo,
+    companyBiddingList,
   };
 }
