@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 
 const columns = [
   {
@@ -28,6 +28,13 @@ const columns = [
     dataIndex: "selectedNumbers",
     key: "selectedNumbers",
     responsive: ["lg"],
+    render: (nums) => (
+      <span>
+        {nums.split("/").map((num) => (
+          <Tag color="geekblue">{num}</Tag>
+        ))}
+      </span>
+    ),
   },
   {
     title: "제출일시",
