@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart } from "./charts/Chart";
 
-const PredPriceChart = ({ predPriceResults = [] }) => {
+const PredPriceChart = ({ predPriceResults = [], loading = false }) => {
   let option = {
     dataset: {
       dimensions: ["price", "count"],
@@ -45,7 +45,7 @@ const PredPriceChart = ({ predPriceResults = [] }) => {
     },
     series: [{ type: "bar" }],
   };
-  return <Chart option={option} />;
+  return <Chart option={option} loading={loading} />;
 };
 
 export default PredPriceChart;

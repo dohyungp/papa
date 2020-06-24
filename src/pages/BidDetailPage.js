@@ -29,7 +29,10 @@ function BidDetailPage() {
     <div>
       <DetailHeader bidInfo={data?.bidInfo || []} loading={loading} />
       <Divider orientation="left">예정가격 결과</Divider>
-      <PredPriceChart predPriceResults={data?.predPriceResults} />
+      <PredPriceChart
+        predPriceResults={data?.predPriceResults}
+        loading={loading}
+      />
       <Divider orientation="left">참여업체 목록</Divider>
       <CompanyTable source={data?.companyBiddingList || []} loading={loading} />
     </div>
