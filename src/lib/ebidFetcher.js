@@ -88,13 +88,13 @@ function getBidInfo(infoElems) {
 }
 
 function getPredPriceSelectionResults(basePriceElems) {
-  const basePriceResults = basePriceElems.map((v) => {
+  const predPriceResults = basePriceElems.map((v, index) => {
     return {
-      basePrices: v.innerText?.trim(),
-      selectionCnt: parseInt(v.nextElementSibling?.innerText),
+      price: v.innerText?.trim(),
+      count: parseInt(v.nextElementSibling?.innerText),
     };
   });
-  return basePriceResults;
+  return predPriceResults;
 }
 
 function getBaseCompanyDetails(companyDetailElems) {
