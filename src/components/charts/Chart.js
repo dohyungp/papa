@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import * as echarts from "echarts";
 import { Spin } from "antd";
+import ErrorPopup from "../ErrorPopup";
 
-export const Chart = ({ option, loading = false }) => {
+export const Chart = ({ option, loading = false, error = false }) => {
   const chart = useRef(null);
 
   useEffect(() => {
@@ -13,7 +14,9 @@ export const Chart = ({ option, loading = false }) => {
   }, [option]);
   return (
     <Spin spinning={loading}>
-      <div ref={chart} style={{ width: "100%", minHeight: "300px" }} />
+      <ErrorPopup error={error} message="데이터가 없습니다.">
+        <div ref={chart} style={{ width: "100%", minHeight: "300px" }} />
+      </ErrorPopup>
     </Spin>
   );
 };

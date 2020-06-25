@@ -92,6 +92,7 @@ function getPredPriceSelectionResults(basePriceElems) {
     return {
       price: v.innerText?.trim(),
       count: parseInt(v.nextElementSibling?.innerText),
+      selected: v.hasAttribute("style"),
     };
   });
   return predPriceResults;

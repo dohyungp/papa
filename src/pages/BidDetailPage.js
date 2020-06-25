@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Divider } from "antd";
 import { DetailHeader } from "../components/DetailHeader";
 import { CompanyTable } from "../components/CompanyTable";
 import { getBidDetail } from "../lib/ebidFetcher";
 import PredPriceChart from "../components/PredPriceChart";
-import { Divider } from "antd";
+import PredRatioChart from "../components/PredRatioChart";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -33,6 +34,8 @@ function BidDetailPage() {
         predPriceResults={data?.predPriceResults}
         loading={loading}
       />
+      <Divider orientation="left">기초대비사정율 그래프</Divider>
+      <PredRatioChart companies={data?.companyBiddingList} loading={loading} />
       <Divider orientation="left">참여업체 목록</Divider>
       <CompanyTable source={data?.companyBiddingList || []} loading={loading} />
     </div>
