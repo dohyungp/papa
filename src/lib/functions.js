@@ -16,6 +16,5 @@ export const binning = (data = [], step) => {
     for (let j = 0; j < sorted.length; j += 1)
       if (sorted[j] >= bins[i].start && sorted[j] < bins[i].end)
         bins[i].count += 1;
-  console.log(bins);
   return bins;
 };

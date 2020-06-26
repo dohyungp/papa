@@ -12,7 +12,7 @@ const PredPriceChart = ({ predPriceResults = [], loading = false }) => {
   let option = {
     grid: {
       top: "6",
-      right: "0",
+      right: "5",
       bottom: "17",
       left: "25",
     },
